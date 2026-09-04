@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';  //useState: store events, useEffect: fetch events
 import type {Event} from './types';  
-
+import EventCard from './components/EventCard';
 
 function App() {  //react component.
   const [events, setEvents] = useState<Event[]>([]);  //starts empty, but will eventually be filled with events from the HackIllinois API.
@@ -18,11 +18,11 @@ function App() {  //react component.
     <main>
       <h1> HackIllinois Schedule </h1>
       <p> Events loaded: {events.length} </p>
-      {events.map((event) => (
-        <div key={event.eventId}>
-          <h2>{event.name}</h2>
-          <p>{event.description}</p>
-        </div>
+      {events.map((event) => ( //this renders an eventCard for each eventx
+        <EventCard
+          key={event.eventId}
+          event={event}
+        />
       ))}
     </main>
   );
