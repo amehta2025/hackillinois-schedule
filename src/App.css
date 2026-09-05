@@ -9,4 +9,74 @@
 main {
   position: relative;
   z-index: 1;
+  padding: 32px;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.hackillinois-logo {
+  width: 180px;
+}
+
+.schedule-layout { /*this is the layout of schedule page*/
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  height: calc(100vh - 140px);
+}
+
+.event-list,
+.event-details {
+  border: 2px dashed rgba(255, 255, 255, 0.45);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.event-list {
+  overflow-y: auto; /*this allows scrollability*/
+}
+
+/* this isthe styling for all of the 41 events cards */
+.event-card {
+  background: rgba(4, 32, 52, 0.42);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 16px 14px;
+  color: white;
+  transition: background 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+  text-align: left;
+}
+
+.event-card h2,
+.event-card p {
+  text-align: left;
+}
+
+.event-card:hover {
+  background: rgba(12, 58, 88, 0.7);
+  transform: translateX(4px);
+}
+
+.event-card h2 {
+  font-size: 1rem;
+  margin: 0 0 6px 0;
+  color: white;
+}
+
+.event-card p {
+  margin: 3px 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+
+main { 
+  /*this keeps the main content above the ocean background*/
+  position: relative;
+  z-index: 1;
 }

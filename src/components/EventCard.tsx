@@ -2,14 +2,15 @@ import type { Event } from "../types";
 
 type EventCardProps = { //expects a single prop called event of type Event
   event: Event;
+  onClick: () => void;
 };
 
-function EventCard({ event }: EventCardProps) {
+function EventCard({ event, onClick }: EventCardProps) {
   const start = new Date(event.startTime * 1000); //converts from seconds to ms
   const end = new Date(event.endTime * 1000);
 
   return (
-    <div>
+    <div className="event-card" onClick={onClick}>
       <h2>{event.name}</h2>
       <p>
         {start.toLocaleTimeString([], {
@@ -31,4 +32,3 @@ function EventCard({ event }: EventCardProps) {
 //converts time, displays first location's description
 
 export default EventCard;
-

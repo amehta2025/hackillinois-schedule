@@ -3,23 +3,27 @@ import { DeepOcean } from "recoat/three";
 import type {Event} from './types';  
 import EventCard from './components/EventCard';
 import './App.css';
+
 function App() {  //react component.
   const [events, setEvents] = useState<Event[]>([]);  //starts empty, but will eventually be filled with events from the HackIllinois API.
   const [selectedDay, setSelectedDay] = useState("Friday");  //initially set to friday, but can be changed
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null); 
+
   const oceanRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-      if (!oceanRef.current) return;
 
-      const background = DeepOcean({
-        container: oceanRef.current,
-      });
+  useEffect(() => {
+    if (!oceanRef.current) return;
 
-      background.start();
+    const background = DeepOcean({
+      container: oceanRef.current,
+    });
 
-      return () => {
-        background.destroy();
-      };
-    }, []);
+    background.start();
+
+    return () => {
+      background.destroy();
+    };
+  }, []);
   
   useEffect(() => {
     fetch("https://adonix.hackillinois.org/event/")  //calls GET /event on the HackIllinois API, which returns a JSON object with an array of events.
@@ -29,6 +33,7 @@ function App() {  //react component.
         setEvents(data.events); 
       });
   }, []);
+
   const sortedEvents = [...events].sort(
     (a, b) => a.startTime - b.startTime //sorts events from earliest to latest
   );
@@ -41,37 +46,76 @@ function App() {  //react component.
   });
 
   return (
-  <>
-    <div
-      ref={oceanRef}
-      className="ocean-background"
-    />
+    <>
+      <div
+        ref={oceanRef}
+        className="ocean-background"
+      />
 
-    <main>
-      <h1>HackIllinois Schedule</h1>
-      <p>Events loaded: {events.length}</p>
+      <main>
+        <div className="top-bar">
+          <img
+            src="/hackillinois-logo.svg"
+            alt="HackIllinois"
+            className="hackillinois-logo"
+          />
 
-      <div>
-        <button onClick={() => setSelectedDay("Friday")}>
-          Friday
-        </button>
-        <button onClick={() => setSelectedDay("Saturday")}>
-          Saturday
-        </button>
-        <button onClick={() => setSelectedDay("Sunday")}>
-          Sunday
-        </button>
-      </div>
+          <div className="day-tabs">
+            <button onClick={() => setSelectedDay("Friday")}>Friday</button>
+            <button onClick={() => setSelectedDay("Saturday")}>Saturday</button>
+            <button onClick={() => setSelectedDay("Sunday")}>Sunday</button>
+          </div>
+        </div>
 
-      {filteredEvents.map((event) => (
-        <EventCard
-          key={event.eventId}
-          event={event}
-        />
-      ))}
-    </main>
-  </>
-);
+        <div className="schedule-layout">
+          <section className="event-list">
+            {filteredEvents.map((event) => (
+              <EventCard
+                key={event.eventId}
+                event={event}
+                onClick={() => setSelectedEvent(event)}
+              />
+            ))}
+          </section>
+
+          <section className="event-details">
+            {selectedEvent ? (
+              <>
+                <h2>{selectedEvent.name}</h2>
+                <p>{selectedEvent.description}</p>
+
+                <p>
+                  {new Date(selectedEvent.startTime * 1000).toLocaleTimeString(
+                    "en-US",
+                    {
+                      hour: "numeric",
+                      minute: "2-digit"
+                    }
+                  )}
+                  {" - "}
+                  {new Date(selectedEvent.endTime * 1000).toLocaleTimeString(
+                    "en-US",
+                    {
+                      hour: "numeric",
+                      minute: "2-digit"
+                    }
+                  )}
+                </p>
+
+                <p>{selectedEvent.locations[0]?.description}</p>
+                <p>{selectedEvent.eventType}</p>
+              </>
+            ) : (
+              <>
+                <h2>Select an event</h2>
+                <p>Click an event on the left to view more details.</p>
+              </>
+            )}
+          </section>
+        </div>
+      </main>
+    </>
+  );
 }
 
 export default App;
