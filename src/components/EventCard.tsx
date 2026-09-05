@@ -23,6 +23,7 @@ function EventCard({ event }: EventCardProps) {
         })}
       </p>
       <p>{event.locations[0]?.description}</p> 
+      <p>{event.eventType}</p>
     </div>
   );
 }
