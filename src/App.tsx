@@ -62,6 +62,13 @@ function App() {
             <p>Schedule</p>
           </div>
 
+          <nav className="site-nav">
+            <span>Home</span>
+            <span className="active">Schedule</span>
+            <span>Mentors</span>
+            <span>Prizes</span>
+          </nav>
+
           <div className="day-tabs">
             <button
               className={selectedDay === "Friday" ? "active" : ""}
