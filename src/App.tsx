@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     if (!oceanRef.current) return;
 
-    // recoat needs the actual div to put the background in
+    // recoat needs the  div to put the background in
     const background = DeepOcean({
       container: oceanRef.current,
     });
@@ -31,7 +31,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setEvents(data.events);
+        setEvents(data.events);  //state changed, so rerender the component with the new events
       });
   }, []);
 
